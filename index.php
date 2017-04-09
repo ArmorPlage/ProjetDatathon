@@ -1,28 +1,35 @@
 <?php
+//on affiche les erreur de php
 ini_set('display_errors', 1);
-require_once __DIR__.'/vendor/autoload.php';
+//on précise que l'on aura besoin de autoload.php
+require_once __DIR__ . '/vendor/autoload.php';
+//on précise que l'on a besoin de la librairies lokhman/silex-config
 use Lokhman\Silex\Provider as ToolsProviders;
-
+//on définie la variable app comme une application
 $app = new Silex\Application();
-
-$app['debug']=true;
+//on active le debug
+$app['debug'] = true;
+//on précise que les donnée nécessaire à ConfigServiceProvider sont dans le dossier config
 $app->register(new ToolsProviders\ConfigServiceProvider(), array('config.dir' => __DIR__ . '/config'));
+//on ammorce l'appli silex
 $app->boot();
+//on renseigne les information nécessaire a la connexion PDO en utilisant le 
+//fichier config.json situé dans le dossier config
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array('db.options' => array(
-        'driver' =>  $app['database']['driver'],
+        'driver' => $app['database']['driver'],
         'dbhost' => $app['database']['host'],
         'dbname' => $app['database']['dbname'],
         'user' => $app['database']['user'],
         'charset' => $app['database']['charset'],
-        'password' =>$app['database']['password'],),));
-
-$app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__.'/views'));
-
+        'password' => $app['database']['password'],),));
+//on renseigne les information nécessaire a la localisation des fichier twig
+$app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__ . '/views'));
+//on renseigne les information nécessaire a la localisation des fichier asset ( js, css , img etc...)
 $app->register(new Silex\Provider\AssetServiceProvider(), array(
     'assets.version' => 'v1',
     'assets.version_format' => '%s?version=%s',
     'assets.named_packages' => array(
-    'public' => array('base_path' => '/public'),
+        'public' => array('base_path' => '/public'),
     ),
 ));
 
@@ -35,7 +42,7 @@ $app->get('/', function () use ($app) {
     //le squelette de la vue & un tableaux avec un index utilisée dans le fichier 
     //et la variable associé
     return $app['twig']->render('index.twig', array(
-        'plages' => $plages,
+                'plages' => $plages
     ));
     //on précise le nom de cette route , c'est ce nom qui est utilisé dans la 
     //fonction path() de twig
@@ -44,23 +51,23 @@ $app->get('/', function () use ($app) {
 //Route qui renvoie un tableau des plages en base et les instancie dans la vue 
 //pour avoir une liste des plages
 $app->get('/les_plages/', function() use($app) {
-   $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");          
-   return $app['twig']->render('lesplages.twig', array(
-       'plages' => $plages
-   ));
+    $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");
+    return $app['twig']->render('lesplages.twig', array(
+                'plages' => $plages
+    ));
 })->bind('les-plages');
 
 //Route qui renvoie le resultat de la requete en json pour être utilisé en ajax
 $app->get('/les-plages-json/', function() use($app) {
-   $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");          
-   return $app->json($plages, 200);
+    $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");
+    return $app->json($plages, 200);
 })->bind('les-plages-json');
 
 //Route qui renvoie les évenement dans une vue spécifié
 $app->get('/evenements/', function () use ($app) {
     $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");
     return $app['twig']->render('index.twig', array(
-        'plages' => $plages
+                'plages' => $plages
     ));
 })->bind('evenements');
 
@@ -68,7 +75,7 @@ $app->get('/evenements/', function () use ($app) {
 $app->get('/une-plage/{plage}', function () use ($app) {
     $plage = $app['db']->fetchAll("SELECT * FROM vue_local_plage WHERE UMID={plage} ORDER BY UMID");
     return $app['twig']->render('une-plage.twig', array(
-        'plage' => $plage
+                'plage' => $plage
     ));
 })->bind('une-plage');
 
@@ -76,7 +83,7 @@ $app->get('/une-plage/{plage}', function () use ($app) {
 $app->get('/meteo/', function () use ($app) {
     $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");
     return $app['twig']->render('index.twig', array(
-        'plages' => $plages
+                'plages' => $plages
     ));
 })->bind('meteo');
 
@@ -84,7 +91,7 @@ $app->get('/meteo/', function () use ($app) {
 $app->get('/aventure/', function () use ($app) {
     $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");
     return $app['twig']->render('index.twig', array(
-        'plages' => $plages
+                'plages' => $plages
     ));
 })->bind('aventure');
 
@@ -92,7 +99,7 @@ $app->get('/aventure/', function () use ($app) {
 $app->get('/conn/', function () use ($app) {
     $plages = $app['db']->fetchAll("SELECT * FROM vue_local_plage ORDER BY UMID");
     return $app['twig']->render('index.twig', array(
-        'plages' => $plages
+                'plages' => $plages
     ));
 })->bind('conn');
 
@@ -100,8 +107,8 @@ $app->get('/conn/', function () use ($app) {
 //Route qui renvoie a la page des mentions légale
 $app->get('/mentions-legales/', function () use ($app) {
     return $app['twig']->render('legal.twig', array(
-        'name' => $name,
+                'name' => $name
     ));
 })->bind('legal-mention');
-
+//on démare l'appli silex
 $app->run();
