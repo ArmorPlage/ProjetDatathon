@@ -1,0 +1,20 @@
+{
+    "name": "vendor/aod",
+    "description": "Description of project Aod.",
+    "authors": [
+        {
+            "name": "Valoo",
+            "email": "valentin_dejoue@live.fr"
+        }
+    ],
+    "require": {
+        "silex/silex": "v2.0.4",
+        "silex/api": "v2.0.4",
+        "silex/providers": "v2.0.4",
+        "doctrine/dbal": "~2.2",
+        "twig/twig": "^2.3",
+        "symfony/twig-bridge": "^3.2",
+        "symfony/asset": "^3.2",
+        "lokhman/silex-config": "^2.0"
+    }
+}

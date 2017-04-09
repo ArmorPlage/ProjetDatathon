@@ -1,0 +1,53 @@
+.navbar{
+    background-color:#FF575A;
+    display: block;
+}
+
+h1{
+    font-family: x-large;
+    color: white;
+}
+
+h2{
+    font-family: x-large;
+}
+
+.navbar-toggle {
+    position: relative;
+    float: left;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-left: 15px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.navbar-nav {
+    margin: 1px -1px;
+}
+
+.navbar-nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2px;
+    padding-right: 4px;
+    line-height: 20px;
+}
+
+#titre
+{
+    border-right: 2px white solid;
+}
+
+#logo
+{
+    background-color:#FF575A;
+}
+
+#map
+{
+    width: 100%;
+}
